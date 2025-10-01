@@ -19,8 +19,8 @@
     const emit = defineEmits(['back','loggedIn'])
 
     function submit() {
-        if (password.value !== confirmedPassword.value || !validEmail) return; //Just to be safe
-        let success = signUpNewUser(validEmail.value, password.value);
+        if (password.value !== confirmedPassword.value || !validEmail.value) return; //Just to be safe
+        let success = signUpNewUser(emailAddress.value, password.value);
 
         if (!success) error.value = 'Something went wrong! Please try again';
         else emit('loggedIn')

@@ -12,7 +12,7 @@ const states = [
   "Ready"
 ]
 
-const state = ref("Sign-Up");
+const state = ref(states[0]);
 
 function updateState (newState) {
   if (!states.includes(newState)) return;
@@ -30,9 +30,9 @@ function backHome() {
 </script>
 
 <template>
-  <HomeScreen v-if="state === 'Initial'" :user="user"/>
+  <HomeScreen v-if="state === 'Initial'" @page="updateState" />
   <SignUp v-else-if="state === 'Sign-Up'" @logged-in="logIn" @back="backHome" />
-  <SignIn v-else-if="state === 'Sign In'" @logged-in="logIn" @back="backHome" />
+  <SignIn v-else-if="state === 'Sign-In'" @logged-in="logIn" @back="backHome" />
   <List  v-else-if="state === 'Ready'" @back="backHome" />
 </template>
 

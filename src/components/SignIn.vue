@@ -1,5 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue';
+    import { signInWithEmail } from '@/database/database-control';
+    import { computed, ref } from 'vue';
 
     const emailAddress = ref("");
     const validEmail = computed(() => {
@@ -17,8 +18,8 @@ import { computed, ref } from 'vue';
     const emit = defineEmits(['back','loggedIn'])
 
     function submit() {
-        if (!validEmail) return; //Just to be safe
-        let success = signUpNewUser(validEmail.value, password.value);
+        if (!validEmail.value) return; //Just to be safe
+        let success = signInWithEmail(emailAddress.value, password.value);
 
         if (!success) error.value = 'Password or email was incorrect!';
         else emit('loggedIn')
