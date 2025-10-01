@@ -14,20 +14,21 @@ import { computed, ref } from 'vue';
 
     const error = ref("")
 
-    function submiter() {
-        error.value = "";
-        if (emailAddress.value === "") {
-            error.value = "No email!"
-            return; 
-        }
-    }
+    const emit = defineEmits(['back','loggedIn'])
 
+    function submit() {
+        if (!validEmail) return; //Just to be safe
+        let success = signUpNewUser(validEmail.value, password.value);
+
+        if (!success) error.value = 'Password or email was incorrect!';
+        else emit('loggedIn')
+    }
 </script>
 
 <template>
     <header>Sign In!</header>
-
-    <form @submit.prevent="submiter">
+    <button @click="$emit('back')">&lt;</button>
+    <form @submit.prevent="submit">
         <label for="email-address">Email:</label><input id="email-address" type="email" v-model="emailAddress" />
         <p v-if="!validEmail">Make sure email is valid!</p>
         <br />

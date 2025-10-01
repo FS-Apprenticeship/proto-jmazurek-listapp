@@ -1,5 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue';
+    import { signUpNewUser } from '@/database/database-control';
+    import { computed, ref } from 'vue';
 
     const emailAddress = ref("");
     const validEmail = computed(() => {
@@ -15,20 +16,22 @@ import { computed, ref } from 'vue';
 
     const error = ref("")
 
-    function submiter() {
-        error.value = "";
-        if (emailAddress.value === "") {
-            error.value = "No email!"
-            return; 
-        }
+    const emit = defineEmits(['back','loggedIn'])
+
+    function submit() {
+        if (password.value !== confirmedPassword.value || !validEmail) return; //Just to be safe
+        let success = signUpNewUser(validEmail.value, password.value);
+
+        if (!success) error.value = 'Something went wrong! Please try again';
+        else emit('loggedIn')
     }
 
 </script>
 
 <template>
     <header>Sign Up!</header>
-
-    <form @submit.prevent="submiter">
+    <button @click="$emit('back')">&lt;</button>
+    <form @submit.prevent="submit">
         <label for="email-address">Email:</label><input id="email-address" type="email" v-model="emailAddress" />
         <p v-if="!validEmail">Make sure email is valid!</p>
         <br />
@@ -38,8 +41,8 @@ import { computed, ref } from 'vue';
         <br />
         <input @click="passwordVisible = !passwordVisible" type="checkbox" :value="passwordVisible">View Password</input>
         <p v-if="password !== confirmedPassword">Passwords don't match</p>
-        <p v-if="error !== ''">{{ error }}</p>
         <br />
         <button type="submit" :disabled="!validEmail || (password !== confirmedPassword)">Sign Up</button>
+        <p v-if="error !== ''">{{ error }}</p>
     </form>
 </template>

@@ -11,10 +11,12 @@ export async function signUpNewUser(email, password) {
   const newUser = {
     id: users.findIndex(user => {
       return user.id === ++previousID;
-    }),
+    }) + 1,
     email,
     password //Obviously evil!
   }
+  
+  console.log(newUser);
 
   users.push(newUser);
 
