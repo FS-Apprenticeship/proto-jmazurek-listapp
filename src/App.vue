@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import HomeScreen from './components/HomeScreen.vue';
 import SignUp from './components/SignUp.vue';
+import List from './components/List/List.vue';
 
 const state = ref("Initial")
 
@@ -9,7 +10,8 @@ const state = ref("Initial")
 
 <template>
     <!-- <HomeScreen v-if="state === 'Initial'" :user="user"/> -->
-    <SignUp />
+    <!-- <SignUp /> -->
+  <List />
 </template>
 
 <style scoped>
