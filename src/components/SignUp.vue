@@ -40,6 +40,6 @@ import { computed, ref } from 'vue';
         <p v-if="password !== confirmedPassword">Passwords don't match</p>
         <p v-if="error !== ''">{{ error }}</p>
         <br />
-        <button type="submit">Sign Up</button>
+        <button type="submit" :disabled="!validEmail || (password !== confirmedPassword)">Sign Up</button>
     </form>
 </template>
