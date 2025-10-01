@@ -63,3 +63,11 @@ export async function deleteListItem(itemToDelete) {
 
   return getListItems();
 }
+
+export async function getEmail() {
+  return user.email;
+}
+
+export async function signOut() {
+  user = undefined;
+}
