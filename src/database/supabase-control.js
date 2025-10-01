@@ -7,8 +7,10 @@ let user, session;
 
 export async function signUpNewUser(email, password) {
   const { data, error } = await supabase.auth.signUp({email, password});
+  console.log(data, error);
 
   if (error !== null) return false;
+
 
   user = data.user;
   session = data.session;
@@ -28,19 +30,19 @@ export async function signInWithEmail(email, password) {
 }
 
 export async function getListItems() {
-
+  return []
 }
 
 export async function addListItem(item) {
-
+  return [];
 }
 
 export async function updateListItem(item) {
-
+  return [];
 }
 
 export async function deleteListItem(item) {
-
+  return [];
 }
 
 export function getEmail() {

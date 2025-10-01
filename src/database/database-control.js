@@ -1,1 +1,1 @@
-export * from './faux-database-control';
+export * from './supabase-control';

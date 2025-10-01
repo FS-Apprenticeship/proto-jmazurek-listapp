@@ -17,9 +17,9 @@
 
     const emit = defineEmits(['back','loggedIn'])
 
-    function submit() {
+    async function submit() {
         if (!validEmail.value) return; //Just to be safe
-        let success = signInWithEmail(emailAddress.value, password.value);
+        let success = await signInWithEmail(emailAddress.value, password.value);
 
         if (!success) error.value = 'Password or email was incorrect!';
         else emit('loggedIn')
