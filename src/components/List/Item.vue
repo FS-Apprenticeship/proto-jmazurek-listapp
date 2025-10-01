@@ -13,7 +13,7 @@ import { ref } from 'vue';
     },
     })
 
-    defineEmits(['update', 'crossOff', 'trash', 'restore','delete']);
+    defineEmits(['update', 'crossOff', 'trash', 'restore','delete', 'edit']);
 
     const mode = ref("View");
 
@@ -26,6 +26,7 @@ import { ref } from 'vue';
             <p v-else>✗</p>
         </button>
         <h3>{{ item.name }}</h3>
+        <button class="edit" @click="$emit('edit')">⚙</button>
         <div class="delete">
             <button v-if="!item.trashed" id="trash-button" class="red">🗑︎</button>
             <div v-else>
@@ -37,25 +38,25 @@ import { ref } from 'vue';
 </template>
 
 <style scoped>
-    .item {
-        width: 50%;
-        border: solid 1px black;
-        border-radius: 20px;
-        
-        display: flex;
-        flex-direction: row;
-    }
-
     .cross-button {
         width: 10%;
-        border: 0px;
+        border: none;
+        border-right: 1px solid black;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
     }
 
     h3 {
-        width: 75%;
+        width: 70%;
         padding-left: 5%;
+    }
+
+    .edit {
+        font-size: larger;
+        width: 5%;
+        justify-content: center;
+        border: none;
+        border-left: 1px solid black;
     }
 
     .delete {

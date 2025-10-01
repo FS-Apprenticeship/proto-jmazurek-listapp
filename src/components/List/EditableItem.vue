@@ -26,15 +26,6 @@ import { ref } from 'vue';
 </template>
 
 <style scoped>
-    .item {
-        width: 50%;
-        border: solid 1px black;
-        border-radius: 20px;
-        
-        display: flex;
-        flex-direction: row;
-    }
-
     .cross-button {
         width: 10%;
         border: 0px;
@@ -43,7 +34,7 @@ import { ref } from 'vue';
     }
 
     input {
-        width: 75%;
+        width: 70%;
         padding-left: 5%;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;

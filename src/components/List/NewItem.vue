@@ -1,40 +1,19 @@
 <script setup>
 import { ref } from 'vue';
-    const { item } = defineProps({
-        item: {
-            type: {
-                name: String,
-                message: String, //Use to add more detail, but not right now
-                crossedOff: Boolean,
-                trashed: Boolean,
-            },
-            required: true,
-        },
-    })
-
     defineEmits(['create']);
 
-    const itemName = ref(item.name);
+    const itemName = ref("");
 
 </script>
 
 <template>
-    <li v-if="mode === 'View'" class="item">
+    <li class="item">
         <input v-model="itemName" />
         <button class="cross-button green" @click="$update('update', item.name)">✔</button>
     </li>
 </template>
 
 <style scoped>
-    .item {
-        width: 50%;
-        border: solid 1px black;
-        border-radius: 20px;
-        
-        display: flex;
-        flex-direction: row;
-    }
-
     .cross-button {
         width: 10%;
         border: 0px;
@@ -43,8 +22,10 @@ import { ref } from 'vue';
     }
 
     input {
-        width: 75%;
+        font-size: larger;
+        width: 85%;
         padding-left: 5%;
+        border: none;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
     }
