@@ -1,4 +1,4 @@
-const genericDatabase = [];
+const genericDatabase = [{name: "Idea!", crossedOff: false, trashed: false, userID: 0}];
 const users = [];
 
 let user, session;
@@ -37,6 +37,9 @@ export async function signInWithEmail(email, password) {
 }
 
 export async function getListItems() {
+  console.log("prepare wait");
+  await new Promise((r) => setTimeout(r, 1000));
+  console.log("returning");
   return genericDatabase.filter(item => item.userID === user.id);
 }
 
@@ -64,7 +67,7 @@ export async function deleteListItem(itemToDelete) {
   return getListItems();
 }
 
-export async function getEmail() {
+export function getEmail() {
   return user.email;
 }
 

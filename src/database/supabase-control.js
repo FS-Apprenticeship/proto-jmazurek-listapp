@@ -43,7 +43,7 @@ export async function deleteListItem(item) {
 
 }
 
-export async function getEmail() {
+export function getEmail() {
   return user.email;
 }
 
@@ -51,6 +51,7 @@ export async function signOut() {
   const { error } = await supabase.auth.signOut(session.access_token);
 
   if (error !== null) return false;
+  user = undefined;
 
   return true;
 }
