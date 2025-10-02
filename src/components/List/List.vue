@@ -2,10 +2,12 @@
 
 import { computed, ref } from 'vue'
 import Item from './Item.vue';
-import { addListItem, deleteListItem, getEmail, getListItems, updateListItem } from '@/database/database-control';
+import { deleteListItem, getEmail, getListItems, updateListItem } from '@/database/database-control';
 import Header from './Header.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
+
+defineEmits(['back'])
 
 function refresh() {
     getListItems().then((items) => list.value = items);
@@ -109,7 +111,7 @@ const mode = ref('Normal');
 </script>
 
 <template>
-    <Header :email="email" />
+    <Header :email="email" @back="$emit('back')" />
     <div class="tabs">
       <button @click="mode = 'Normal'">Normal</button>
       <button @click="mode = 'Trash'">Trash</button>
