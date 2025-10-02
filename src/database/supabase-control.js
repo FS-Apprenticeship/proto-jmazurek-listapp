@@ -6,8 +6,7 @@ const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env
 let user, session;
 
 export async function signUpNewUser(email, password) {
-  const { data, error } = await supabase.auth.signUp({email, password});
-  console.log(data, error);
+  const { data, error } = await supabase.auth.signUp({email, password});  
 
   if (error !== null) return false;
 
@@ -30,11 +29,19 @@ export async function signInWithEmail(email, password) {
 }
 
 export async function getListItems() {
-  return []
+  const {data, error} = await supabase.from('items').select('*').eq('user_id', user.id);
+
+  if (error !== null) return false;
+
+  return data;
 }
 
 export async function addListItem(item) {
-  return [];
+  const { data, error } = await supabase.from('items').insert(item).select();
+
+  if (error !== null) return false;
+
+  return data;
 }
 
 export async function updateListItem(item) {

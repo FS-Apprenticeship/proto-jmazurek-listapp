@@ -8,8 +8,8 @@ import { ref } from 'vue';
 
 <template>
     <li class="item">
-        <input v-model="itemName" />
-        <button class="cross-button green" @click="$update('update', item.name)">✔</button>
+        <input v-model="itemName" @keyup.enter="$emit('create', itemName)" />
+        <button class="cross-button green" @click="$emit('create', itemName)">✔</button>
     </li>
 </template>
 

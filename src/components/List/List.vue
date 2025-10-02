@@ -11,35 +11,52 @@ import Item from './Item.vue';
 import { addListItem, getEmail, getListItems } from '@/database/database-control';
 import Header from './Header.vue';
 import NewItem from './NewItem.vue';
-
-const email = getEmail();
-
-const list = ref([]);
+import EditableItem from './EditableItem.vue';
 
 function refresh() {
     getListItems().then((items) => list.value = items);
 }
 
-function addOnAnotherItemTemporary() {
+refresh();
+
+async function addAnItem(name) {
+    if (name === "") return;
+  
+    console.log(name);
     const something = {
-    name: "Something :|",
-    crossedOff: false,
+    name,
+    checked: false,
     trashed: false,
     }
 
-    addListItem(something);
+    const item = await addListItem(something);
+
+    if (!item) {
+      alert("There was a database error, try again!");
+      return;
+    }
+
+    list.value.unshift(item);
+
     refresh();
 }
 
-refresh();
+const email = getEmail();
+
+const list = ref([]);
+
+const edit = ref(-1);
+
 </script>
 
 <template>
     <Header :email="email" />
-    <button @click="addOnAnotherItemTemporary">Add something!</button>
     <ul>
-      <NewItem />
-      <Item v-for="item in list" :key="item.id" :item="item" />
+      <NewItem @create="addAnItem" />
+      <template v-for="item in list" :key="item.id">
+        <EditableItem v-if="item.id === edit" :item="item" />
+        <Item v-else :item="item" @edit="edit = item.id"/>
+      </template>
     </ul>
 </template>
 

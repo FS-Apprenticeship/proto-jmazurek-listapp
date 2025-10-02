@@ -19,7 +19,7 @@ import { ref } from 'vue';
 </script>
 
 <template>
-    <li v-if="mode === 'View'" class="item">
+    <li class="item">
         <input v-model="itemName" />
         <button class="cross-button green" @click="$update('update', item.name)">✔</button>
     </li>
@@ -34,8 +34,10 @@ import { ref } from 'vue';
     }
 
     input {
-        width: 70%;
+        font-size: larger;
+        width: 85%;
         padding-left: 5%;
+        border: none;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
     }
