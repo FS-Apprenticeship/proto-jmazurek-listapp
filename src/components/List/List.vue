@@ -1,10 +1,4 @@
 <script setup>
-// {
-//     name: "Idea!",
-//     // message: String, //Use to add more detail, but not right now
-//     crossedOff: false,
-//     trashed: false,
-// }
 
 import { computed, ref } from 'vue'
 import Item from './Item.vue';
@@ -18,25 +12,6 @@ function refresh() {
 }
 
 refresh();
-
-async function addAnItem(name) {
-    if (name === "") return;
-  
-    const newItem = {
-    name,
-    checked: false,
-    trashed: false,
-    }
-
-    const item = await addListItem(newItem);
-
-    if (!item) {
-      alert("There was a database error, try again!");
-      return;
-    }
-
-    refresh();
-}
 
 async function updateItem(name) {
     const updatedItem = {
@@ -140,7 +115,7 @@ const mode = ref('Normal');
       <button @click="mode = 'Trash'">Trash</button>
     </div>
     <ul v-if="mode === 'Normal'">
-      <NewItem @create="addAnItem" />
+      <NewItem @create="refresh" />
       <template v-for="item in normalList" :key="item.id">
         <EditableItem v-if="item.id === edit" :item="item" @update="updateItem" />
         <Item v-else :item="item" @edit="edit = item.id" @trash="() => trashItem(item.id)" @check="() => checkItem(item.id, item.checked)"/>

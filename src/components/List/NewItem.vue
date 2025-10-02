@@ -1,15 +1,38 @@
 <script setup>
-import { ref } from 'vue';
-    defineEmits(['create']);
+    import { addListItem } from '@/database/database-control';
+    import { ref } from 'vue';
+
+    const emit = defineEmits(['create']);
 
     const itemName = ref("");
+
+    async function addAnItem() {
+        if (itemName.value === "") return;
+    
+        const newItem = {
+            name: itemName.value,
+            checked: false,
+            trashed: false,
+        }
+
+        const item = await addListItem(newItem);
+
+        if (!item) {
+            alert("There was a database error, try again!");
+            return;
+        }
+
+        itemName.value = "";
+
+        emit('create');
+    }
 
 </script>
 
 <template>
     <li class="item">
-        <input v-model="itemName" @keyup.enter="$emit('create', itemName)" />
-        <button class="cross-button green" @click="$emit('create', itemName)">✔</button>
+        <input v-model="itemName" @keyup.enter="addAnItem" />
+        <button class="cross-button green" @click="addAnItem">✔</button>
     </li>
 </template>
 
