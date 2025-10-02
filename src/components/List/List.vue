@@ -6,9 +6,9 @@
 //     trashed: false,
 // }
 
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 import Item from './Item.vue';
-import { addListItem, getEmail, getListItems, updateListItem } from '@/database/database-control';
+import { addListItem, deleteListItem, getEmail, getListItems, updateListItem } from '@/database/database-control';
 import Header from './Header.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
@@ -35,8 +35,6 @@ async function addAnItem(name) {
       return;
     }
 
-    list.value.unshift(item);
-
     refresh();
 }
 
@@ -46,6 +44,23 @@ async function updateItem(name) {
     }
 
     const item = await updateListItem(updatedItem, edit.value);
+
+    if (!item) {
+      alert("There was a database error, try again!");
+      return;
+    }
+
+    refresh();
+
+    edit.value = -1;
+}
+
+async function checkItem(id, checked) {
+    const updatedItem = {
+      checked: !checked
+    }
+
+    const item = await updateListItem(updatedItem, id);
 
     if (!item) {
       alert("There was a database error, try again!");
@@ -90,7 +105,14 @@ async function restoreItem(id) {
 }
 
 async function deleteItem(id) {
+  const destroyedItem = await deleteListItem(id);
 
+  if (!destroyedItem) {
+    alert("There was a database error, try again!");
+    return;
+  }
+
+  refresh();
 }
 
 const email = getEmail();
@@ -121,11 +143,11 @@ const mode = ref('Normal');
       <NewItem @create="addAnItem" />
       <template v-for="item in normalList" :key="item.id">
         <EditableItem v-if="item.id === edit" :item="item" @update="updateItem" />
-        <Item v-else :item="item" @edit="edit = item.id" @trash="() => trashItem(item.id)"/>
+        <Item v-else :item="item" @edit="edit = item.id" @trash="() => trashItem(item.id)" @check="() => checkItem(item.id, item.checked)"/>
       </template>
     </ul>
     <ul v-else>
-        <Item v-for="item in trashedList" :key="item.id" :item="item" @restore="() => restoreItem(item.id)"/>
+        <Item v-for="item in trashedList" :key="item.id" :item="item" @restore="() => restoreItem(item.id)" @delete="() => deleteItem(item.id)" />
     </ul>
 </template>
 

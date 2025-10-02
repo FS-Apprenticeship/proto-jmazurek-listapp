@@ -6,14 +6,14 @@ import { ref } from 'vue';
         type: {
             name: String,
             message: String, //Use to add more detail, but not right now
-            crossedOff: Boolean,
+            checked: Boolean,
             trashed: Boolean,
         },
         required: true,
     },
     })
 
-    defineEmits(['update', 'crossOff', 'trash', 'restore','delete', 'edit']);
+    defineEmits(['update', 'check', 'trash', 'restore','delete', 'edit']);
 
     const mode = ref("View");
 
@@ -21,9 +21,8 @@ import { ref } from 'vue';
 
 <template>
     <li v-if="mode === 'View'" class="item">
-        <button class="cross-button" :class="item.crossedOff ? 'green' : ''" @click="$emit('crossOff', item)">
-            <p v-if="item.crossedOff">✔</p>
-            <p v-else>✗</p>
+        <button class="cross-button" :class="item.checked ? 'green' : ''" @click="$emit('check', item)">
+            {{item.checked ? "✔" : "✗"}}
         </button>
         <h3>{{ item.name }}</h3>
         <button v-if="!item.trashed" class="edit" @click="$emit('edit')">⚙</button>

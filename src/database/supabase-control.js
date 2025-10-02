@@ -47,14 +47,17 @@ export async function addListItem(item) {
 export async function updateListItem(item, id) {
   const {data, error} = await supabase.from('items').update(item).eq('user_id', user.id).eq('id', id).select();
 
-  console.log(error, item, id);
   if (error !== null) return false;
 
   return data;
 }
 
-export async function deleteListItem(item) {
-  return [];
+export async function deleteListItem(id) {
+  const {data, error} = await supabase.from('items').delete().eq('user_id', user.id).eq('id', id).select();
+
+  if (error !== null) return false;
+
+  return data;
 }
 
 export function getEmail() {
