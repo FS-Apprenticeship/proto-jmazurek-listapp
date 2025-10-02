@@ -1,23 +1,6 @@
 # proto-jmazurek-listapp
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+The goal of this project is to provide a list application in Vue and integrated with Supabase. It also shows how I can adapt to new technologies that I haven't used previously.
 
 ## Project Setup
 
@@ -36,3 +19,29 @@ npm run dev
 ```sh
 npm run build
 ```
+## Required Variables
+```env
+VITE_SUPABASE_URL = "https://[your link here].supabase.co"
+VITE_SUPABASE_ANON_KEY = "[your key here]"
+```
+
+## Schema
+### Table items
+  id int8
+  user_id uuid
+  name text
+  checked bool
+  trashed bool
+  trash_time timestamp
+  next int8
+
+### RLS
+  It uses a very basic scheme of ensuring the user_id of the item in the table is the same as the user id that has sent the request. 
+  Just using the basics from: https://supabase.com/docs/guides/database/postgres/row-level-security
+
+## Next Steps
+* UI prettification
+* Restructure internal data handling
+* Auto-deletion of old trashed items
+* Multiple lists
+* Sharing lists between users
