@@ -26,12 +26,12 @@ import { ref } from 'vue';
             <p v-else>✗</p>
         </button>
         <h3>{{ item.name }}</h3>
-        <button class="edit" @click="$emit('edit')">⚙</button>
+        <button v-if="!item.trashed" class="edit" @click="$emit('edit')">⚙</button>
         <div class="delete">
-            <button v-if="!item.trashed" id="trash-button" class="red">🗑︎</button>
+            <button v-if="!item.trashed" id="trash-button" class="red" @click="$emit('trash')">🗑︎</button>
             <div v-else>
-                <button id="delete-button" class="red">Delete!</button>
-                <button id="restore-button" class="green">↩︎ Restore</button>
+                <button id="delete-button" class="red" @click="$emit('delete')">Delete!</button>
+                <button id="restore-button" class="green" @click="$emit('restore')">↩︎ Restore</button>
             </div>
         </div>
     </li>
@@ -60,6 +60,7 @@ import { ref } from 'vue';
     }
 
     .delete {
+        margin-left: auto;
         width: 10%;
         border-bottom-right-radius: 20px;
     }
