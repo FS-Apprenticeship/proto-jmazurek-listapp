@@ -12,16 +12,20 @@ import { ref } from 'vue';
         }
     })
 
-    defineEmits(['update']);
+    const emit = defineEmits(['update']);
 
     const itemName = ref(item.name);
+
+    function update() {
+        emit('update', itemName.value);
+    }
 
 </script>
 
 <template>
     <li class="item">
         <input v-model="itemName" />
-        <button class="cross-button green" @click="$update('update', item.name)">✔</button>
+        <button class="cross-button green" @click="update">✔</button>
     </li>
 </template>
 

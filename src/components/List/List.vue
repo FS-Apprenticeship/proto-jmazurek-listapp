@@ -8,7 +8,7 @@
 
 import { ref, watchEffect } from 'vue'
 import Item from './Item.vue';
-import { addListItem, getEmail, getListItems } from '@/database/database-control';
+import { addListItem, getEmail, getListItems, updateListItem } from '@/database/database-control';
 import Header from './Header.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
@@ -22,14 +22,13 @@ refresh();
 async function addAnItem(name) {
     if (name === "") return;
   
-    console.log(name);
-    const something = {
+    const newItem = {
     name,
     checked: false,
     trashed: false,
     }
 
-    const item = await addListItem(something);
+    const item = await addListItem(newItem);
 
     if (!item) {
       alert("There was a database error, try again!");
@@ -47,6 +46,23 @@ const list = ref([]);
 
 const edit = ref(-1);
 
+async function updateItem(name) {
+    const updatedItem = {
+      name
+    }
+
+    const item = await updateListItem(updatedItem, edit.value);
+
+    if (!item) {
+      alert("There was a database error, try again!");
+      return;
+    }
+
+    refresh();
+
+    edit.value = -1;
+}
+
 </script>
 
 <template>
@@ -54,7 +70,7 @@ const edit = ref(-1);
     <ul>
       <NewItem @create="addAnItem" />
       <template v-for="item in list" :key="item.id">
-        <EditableItem v-if="item.id === edit" :item="item" />
+        <EditableItem v-if="item.id === edit" :item="item" @update="updateItem" />
         <Item v-else :item="item" @edit="edit = item.id"/>
       </template>
     </ul>
