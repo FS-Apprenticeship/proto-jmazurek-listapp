@@ -40,6 +40,7 @@ VITE_SUPABASE_ANON_KEY = "[your key here]"
   Just using the basics from: https://supabase.com/docs/guides/database/postgres/row-level-security
 
 ## Next Steps
+* ~~Routing~~
 * UI prettification
 * Restructure internal data handling
 * Auto-deletion of old trashed items

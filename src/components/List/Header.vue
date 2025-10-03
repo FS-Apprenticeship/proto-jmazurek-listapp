@@ -1,5 +1,6 @@
 <script setup>
 import { signOut } from '@/database/database-control';
+import { useRouter } from 'vue-router';
 
 defineProps({
   email: {
@@ -10,11 +11,12 @@ defineProps({
 })
 
 const emit = defineEmits(['back']);
+const router = useRouter();
 
 function logOut() {
   const success = signOut();
 
-  if (success) emit('back');
+  if (success) router.push('/');
   else alert('There was an error in signing out!');
 }
 

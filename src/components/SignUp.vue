@@ -1,6 +1,9 @@
 <script setup>
     import { signUpNewUser } from '@/database/database-control';
     import { computed, ref } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
 
     const emailAddress = ref("");
     const validEmail = computed(() => {
@@ -16,23 +19,20 @@
 
     const error = ref("")
 
-    const emit = defineEmits(['back','loggedIn'])
-
     async function submit() {
         if (password.value !== confirmedPassword.value || !validEmail.value) return; //Just to be safe
         let success = await signUpNewUser(emailAddress.value, password.value);
 
-        console.log(success);
-
         if (!success) error.value = 'Something went wrong! Please try again';
-        else emit('loggedIn')
+        else router.push('list')
     }
-
 </script>
 
 <template>
-    <header>Sign Up!</header>
-    <button @click="$emit('back')">&lt;</button>
+    <header>
+        <button class="back" @click="router.back()">&lt;</button>
+        <h1>Sign Up!</h1>
+    </header>
     <form @submit.prevent="submit">
         <label for="email-address">Email:</label><input id="email-address" type="email" v-model="emailAddress" />
         <p v-if="!validEmail">Make sure email is valid!</p>
@@ -48,3 +48,26 @@
         <p v-if="error !== ''">{{ error }}</p>
     </form>
 </template>
+
+<style scoped>
+    header {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    background-color: lightseagreen;
+  }
+
+  h1 {
+    margin-left: 5px;
+    margin-right: auto;
+  }
+
+  .back {
+    height: 200px;
+    width: 200px;
+    font-size:xx-large;
+    background-color: inherit;
+  }
+</style>

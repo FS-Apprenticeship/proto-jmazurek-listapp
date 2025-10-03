@@ -1,6 +1,9 @@
 <script setup>
     import { signInWithEmail } from '@/database/database-control';
     import { computed, ref } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
 
     const emailAddress = ref("");
     const validEmail = computed(() => {
@@ -22,13 +25,13 @@
         let success = await signInWithEmail(emailAddress.value, password.value);
 
         if (!success) error.value = 'Password or email was incorrect!';
-        else emit('loggedIn')
+        else router.push('list');
     }
 </script>
 
 <template>
     <header>Sign In!</header>
-    <button @click="$emit('back')">&lt;</button>
+    <button @click="router.back()">&lt;</button>
     <form @submit.prevent="submit">
         <label for="email-address">Email:</label><input id="email-address" type="email" v-model="emailAddress" />
         <p v-if="!validEmail">Make sure email is valid!</p>

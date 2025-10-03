@@ -111,7 +111,7 @@ const mode = ref('Normal');
 </script>
 
 <template>
-    <Header :email="email" @back="$emit('back')" />
+    <Header :email="email" />
     <div class="tabs">
       <button @click="mode = 'Normal'">Normal</button>
       <button @click="mode = 'Trash'">Trash</button>
