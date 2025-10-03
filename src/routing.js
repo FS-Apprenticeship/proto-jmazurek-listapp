@@ -9,7 +9,9 @@ const routes = [
   { path: '/', component: HomeScreen },
   { path: '/sign-up', component: SignUp },
   { path: '/sign-in', component: SignIn },
-  { path: '/list', component: List },
+  { path: '/list', component: List, children: [
+    {path: 'trash', component: List}
+  ]},
 ]
 
 export const router = createRouter({

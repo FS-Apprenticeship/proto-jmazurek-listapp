@@ -2,7 +2,7 @@
 
 import { computed, ref } from 'vue'
 import Item from './Item.vue';
-import { getEmail } from '@/database/database-control';
+import { deleteListItem, getEmail, getListItems, updateListItem } from '@/database/database-control';
 import Header from './Header.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
@@ -33,6 +33,11 @@ const mode = ref('Normal');
 </script>
 
 <template>
+    <Header :email="email" />
+    <div class="tabs">
+      <button @click="mode = 'Normal'">Normal</button>
+      <button @click="router.push('/list/trash')">Trash</button>
+    </div>
     <ul>
       <NewItem @create="refresh" />
       <template v-for="item in normalList" :key="item.id">

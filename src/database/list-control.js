@@ -1,11 +1,19 @@
 import { deleteListItem, getID, getListItems, updateListItem } from '@/database/database-control';
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 
-const list = reactive({
+export const list = reactive({
     user_id: getID(),
     list_id: 0,
     value: []
 });
+
+export const untrashedList = computed(() => {
+  return list.value.filter(item => !item.trashed);
+})
+
+export const trashedList = computed(() => {
+  return list.value.filter(item => item.trashed);
+})
 
 let refresher
 
@@ -30,7 +38,7 @@ export function immediateRefresh() {
     getListItems().then((items) => list.value = items);
 }
 
-async function addAnItem() {
+export async function addAnItem() {
     if (itemName.value === "") return false;
 
     const newItem = {
