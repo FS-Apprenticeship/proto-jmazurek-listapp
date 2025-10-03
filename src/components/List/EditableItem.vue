@@ -1,4 +1,5 @@
 <script setup>
+import { updateItemName } from '@/database/list-control';
 import { ref } from 'vue';
     const { item } = defineProps({
         item: {
@@ -12,19 +13,20 @@ import { ref } from 'vue';
         }
     })
 
-    const emit = defineEmits(['update']);
+    const emit = defineEmits(['complete']);
 
     const itemName = ref(item.name);
 
     function update() {
-        emit('update', itemName.value);
+        const success = updateItemName(itemName, item.id)
+        if (success) emit('complete')
     }
 
 </script>
 
 <template>
     <li class="item">
-        <input v-model="itemName" />
+        <input v-model="itemName" @keypress.enter="update"/>
         <button class="cross-button green" @click="update">✔</button>
     </li>
 </template>

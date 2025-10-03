@@ -10,7 +10,6 @@ export async function signUpNewUser(email, password) {
 
   if (error !== null) return false;
 
-
   user = data.user;
   session = data.session;
 
@@ -61,10 +60,12 @@ export async function deleteListItem(id) {
 }
 
 export function getID() {
+  if (user === undefined) return undefined
   return user.id;
 }
 
 export function getEmail() {
+  if (user === undefined) return undefined
   return user.email;
 }
 

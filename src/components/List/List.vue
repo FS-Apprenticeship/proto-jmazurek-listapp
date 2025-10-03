@@ -1,42 +1,20 @@
 <script setup>
 
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import Item from './Item.vue';
-import { getEmail } from '@/database/database-control';
-import Header from './Header.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
-
-defineEmits(['back'])
-
-const route = useRoute();
-const router = useRouter();
-
-const email = getEmail();
-
-const list = ref([]);
-
-const normalList = computed(() => {
-  return list.value.filter(item => !item.trashed);
-})
-
-const trashedList = computed(() => {
-  return list.value.filter(item => item.trashed);
-})
+import { checkItem, trashItem, untrashedList } from '@/database/list-control';
 
 const edit = ref(-1);
-
-const mode = ref('Normal');
 
 </script>
 
 <template>
     <ul>
-      <NewItem @create="refresh" />
-      <template v-for="item in normalList" :key="item.id">
-        <EditableItem v-if="item.id === edit" :item="item" @update="updateItem" />
+      <NewItem />
+      <template v-for="item in untrashedList" :key="item.id">
+        <EditableItem v-if="item.id === edit" :item="item" @complete="edit = -1" />
         <Item v-else :item="item" @edit="edit = item.id" @trash="() => trashItem(item.id)" @check="() => checkItem(item.id, item.checked)"/>
       </template>
     </ul>

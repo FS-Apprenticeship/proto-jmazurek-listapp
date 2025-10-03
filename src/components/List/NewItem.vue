@@ -1,17 +1,24 @@
 <script setup>
-    import { addListItem } from '@/database/database-control';
+    import { addAnItem } from '@/database/list-control';
     import { ref } from 'vue';
 
     const emit = defineEmits(['create']);
 
     const itemName = ref("");
-
+    
+    function add() {
+        const success = addAnItem(itemName);
+        
+        if (success) {
+            itemName.value = "";
+        }
+    }
 </script>
 
 <template>
     <li class="item">
-        <input v-model="itemName" @keyup.enter="addAnItem" />
-        <button class="cross-button green" @click="addAnItem">✔</button>
+        <input v-model="itemName" @keyup.enter="add" />
+        <button class="cross-button green" @click="add">✔</button>
     </li>
 </template>
 

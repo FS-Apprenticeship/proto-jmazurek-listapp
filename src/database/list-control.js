@@ -1,4 +1,4 @@
-import { deleteListItem, getID, getListItems, updateListItem } from '@/database/database-control';
+import { addListItem, deleteListItem, getID, getListItems, updateListItem } from '@/database/database-control';
 import { computed, reactive } from 'vue';
 
 export const list = reactive({
@@ -19,7 +19,7 @@ let refresher
 
 const refreshTime = 1000 * 60 * 10
 export function initializeRefreshing() {
-    immediateRefresh
+    immediateRefresh();
     refresher = setInterval(immediateRefresh, refreshTime);
 }
 
@@ -38,7 +38,7 @@ export function immediateRefresh() {
     getListItems().then((items) => list.value = items);
 }
 
-export async function addAnItem() {
+export async function addAnItem(itemName) {
     if (itemName.value === "") return false;
 
     const newItem = {
@@ -47,7 +47,7 @@ export async function addAnItem() {
         trashed: false,
     }
 
-    const item = await addListItem(newItem);
+    const [item] = await addListItem(newItem);
 
     if (!item) {
         alert("There was a database error, try again!");
@@ -60,16 +60,18 @@ export async function addAnItem() {
 }
 
 function updateItemInList(item) {
-    const index = list.value.findIndex(i => i.id === item.id);
+    const index = list.value.findIndex(i => {
+      return i.id === item.id
+    });
     list.value[index] = item;
 }
 
 export async function updateItemName(name, id) {
     const updatedItem = {
-      name
+      name: name.value
     }
 
-    const item = await updateListItem(updatedItem, id);
+    const [item] = await updateListItem(updatedItem, id);
 
     if (!item) {
       alert("There was a database error, try again!");
@@ -84,7 +86,7 @@ export async function checkItem(id, checked) {
       checked: !checked
     }
 
-    const item = await updateListItem(updatedItem, id);
+    const [item] = await updateListItem(updatedItem, id);
 
     if (!item) {
       alert("There was a database error, try again!");
@@ -100,7 +102,7 @@ export async function trashItem(id) {
       trash_time: new Date()
     }
 
-    const item = await updateListItem(updatedItem, id);
+    const [item] = await updateListItem(updatedItem, id);
 
     if (!item) {
       alert("There was a database error, try again!");
@@ -116,7 +118,7 @@ export async function restoreItem(id) {
       trash_time: null
     }
 
-    const item = await updateListItem(updatedItem, id);
+    const [item] = await updateListItem(updatedItem, id);
 
     if (!item) {
       alert("There was a database error, try again!");
@@ -127,7 +129,7 @@ export async function restoreItem(id) {
 }
 
 export async function deleteItem(id) {
-  const destroyedItem = await deleteListItem(id);
+  const [destroyedItem] = await deleteListItem(id);
 
   if (!destroyedItem) {
     alert("There was a database error, try again!");
