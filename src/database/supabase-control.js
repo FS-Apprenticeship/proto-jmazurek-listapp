@@ -60,6 +60,10 @@ export async function deleteListItem(id) {
   return data;
 }
 
+export function getID() {
+  return user.id;
+}
+
 export function getEmail() {
   return user.email;
 }

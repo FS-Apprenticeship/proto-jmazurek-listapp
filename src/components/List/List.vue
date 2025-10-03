@@ -6,91 +6,13 @@ import { deleteListItem, getEmail, getListItems, updateListItem } from '@/databa
 import Header from './Header.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 defineEmits(['back'])
 
-function refresh() {
-    getListItems().then((items) => list.value = items);
-}
-
-refresh();
-
-async function updateItem(name) {
-    const updatedItem = {
-      name
-    }
-
-    const item = await updateListItem(updatedItem, edit.value);
-
-    if (!item) {
-      alert("There was a database error, try again!");
-      return;
-    }
-
-    refresh();
-
-    edit.value = -1;
-}
-
-async function checkItem(id, checked) {
-    const updatedItem = {
-      checked: !checked
-    }
-
-    const item = await updateListItem(updatedItem, id);
-
-    if (!item) {
-      alert("There was a database error, try again!");
-      return;
-    }
-
-    refresh();
-
-    edit.value = -1;
-}
-
-async function trashItem(id) {
-    const updatedItem = {
-      trashed: true,
-      trash_time: new Date()
-    }
-
-    const item = await updateListItem(updatedItem, id);
-
-    if (!item) {
-      alert("There was a database error, try again!");
-      return;
-    }
-
-    refresh();
-}
-
-async function restoreItem(id) {
-    const updatedItem = {
-      trashed: false,
-      trash_time: null
-    }
-
-    const item = await updateListItem(updatedItem, id);
-
-    if (!item) {
-      alert("There was a database error, try again!");
-      return;
-    }
-
-    refresh();
-}
-
-async function deleteItem(id) {
-  const destroyedItem = await deleteListItem(id);
-
-  if (!destroyedItem) {
-    alert("There was a database error, try again!");
-    return;
-  }
-
-  refresh();
-}
+const route = useRoute();
+const router = useRouter();
 
 const email = getEmail();
 
@@ -114,7 +36,7 @@ const mode = ref('Normal');
     <Header :email="email" />
     <div class="tabs">
       <button @click="mode = 'Normal'">Normal</button>
-      <button @click="mode = 'Trash'">Trash</button>
+      <button @click="router.push('/list/trash')">Trash</button>
     </div>
     <ul v-if="mode === 'Normal'">
       <NewItem @create="refresh" />
