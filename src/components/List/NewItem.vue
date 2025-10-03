@@ -6,27 +6,6 @@
 
     const itemName = ref("");
 
-    async function addAnItem() {
-        if (itemName.value === "") return;
-    
-        const newItem = {
-            name: itemName.value,
-            checked: false,
-            trashed: false,
-        }
-
-        const item = await addListItem(newItem);
-
-        if (!item) {
-            alert("There was a database error, try again!");
-            return;
-        }
-
-        itemName.value = "";
-
-        emit('create');
-    }
-
 </script>
 
 <template>

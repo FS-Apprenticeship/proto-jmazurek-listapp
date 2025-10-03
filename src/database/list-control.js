@@ -1,5 +1,5 @@
-import { deleteListItem, getEmail, getID, getListItems, updateListItem } from '@/database/database-control';
-import { reactive, ref, watch } from 'vue';
+import { deleteListItem, getID, getListItems, updateListItem } from '@/database/database-control';
+import { reactive } from 'vue';
 
 const list = reactive({
     user_id: getID(),
@@ -7,28 +7,71 @@ const list = reactive({
     value: []
 });
 
-export function refresh() {
+let refresher
+
+const refreshTime = 1000 * 60 * 10
+export function initializeRefreshing() {
+    immediateRefresh
+    refresher = setInterval(immediateRefresh, refreshTime);
+}
+
+export function endRefreshing() {
+    list.user_id = undefined;
+    list.list_id = 0;
+    list.value = [];
+    clearInterval(refresher);
+}
+
+export function immediateRefresh() {
+    if (getID() === undefined) {
+        endRefreshing();
+        throw Error('No user logged in!')
+    }
     getListItems().then((items) => list.value = items);
 }
 
-async function updateItem(name) {
+async function addAnItem() {
+    if (itemName.value === "") return false;
+
+    const newItem = {
+        name: itemName.value,
+        checked: false,
+        trashed: false,
+    }
+
+    const item = await addListItem(newItem);
+
+    if (!item) {
+        alert("There was a database error, try again!");
+        return false;
+    }
+
+    list.value.push(item);
+
+    return true;
+}
+
+function updateItemInList(item) {
+    const index = list.value.findIndex(i => i.id === item.id);
+    list.value[index] = item;
+}
+
+export async function updateItemName(name, id) {
     const updatedItem = {
       name
     }
 
-    const item = await updateListItem(updatedItem, edit.value);
+    const item = await updateListItem(updatedItem, id);
 
     if (!item) {
       alert("There was a database error, try again!");
       return;
     }
 
-    refresh();
-
-    edit.value = -1;
+    updateItemInList(item)
 }
 
-async function checkItem(id, checked) {
+export async function checkItem(id, checked) {
     const updatedItem = {
       checked: !checked
     }
@@ -40,12 +83,10 @@ async function checkItem(id, checked) {
       return;
     }
 
-    refresh();
-
-    edit.value = -1;
+    updateItemInList(item)
 }
 
-async function trashItem(id) {
+export async function trashItem(id) {
     const updatedItem = {
       trashed: true,
       trash_time: new Date()
@@ -58,10 +99,10 @@ async function trashItem(id) {
       return;
     }
 
-    refresh();
+    updateItemInList(item)
 }
 
-async function restoreItem(id) {
+export async function restoreItem(id) {
     const updatedItem = {
       trashed: false,
       trash_time: null
@@ -74,10 +115,10 @@ async function restoreItem(id) {
       return;
     }
 
-    refresh();
+    updateItemInList(item)
 }
 
-async function deleteItem(id) {
+export async function deleteItem(id) {
   const destroyedItem = await deleteListItem(id);
 
   if (!destroyedItem) {
@@ -85,5 +126,7 @@ async function deleteItem(id) {
     return;
   }
 
-  refresh();
+  const index = list.value.findIndex(item => item.id === id)
+  if (index === -1) return;
+  list.value.splice(index, 1);
 }
