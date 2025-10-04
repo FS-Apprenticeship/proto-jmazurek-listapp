@@ -1,8 +1,7 @@
-import { addListItem, deleteListItem, getID, getListItems, updateListItem } from '@/database/database-control';
+import { getID, supabase } from '@/database/database-control';
 import { computed, reactive } from 'vue';
 
 export const list = reactive({
-    user_id: getID(),
     list_id: 0,
     value: []
 });
@@ -15,25 +14,65 @@ export const trashedList = computed(() => {
   return list.value.filter(item => item.trashed);
 })
 
+export async function getListItems() {
+  const {data, error} = await supabase.from('items').select('*').eq('list_id', list.list_id);
+
+  if (error !== null) return false;
+
+  return data;
+}
+
+export async function addListItem(item) {
+  const { data, error } = await supabase.from('items').insert({...item, list_id: list.list_id}).select();
+
+  if (error !== null) return false;
+
+  return data;
+}
+
+export async function updateListItem(item, id) {
+  const {data, error} = await supabase.from('items').update(item).eq('list_id', list.list_id).eq('id', id).select();
+
+  if (error !== null) return false;
+
+  return data;
+}
+
+export async function deleteListItem(id) {
+  const {data, error} = await supabase.from('items').delete().eq('list_id', list.list).eq('id', id).select();
+
+  if (error !== null) return false;
+
+  return data;
+}
+
 let refresher
 
 const refreshTime = 1000 * 60 * 10
-export function initializeRefreshing() {
-    immediateRefresh();
+export function initializeRefreshing(list_id) {
+    immediateRefresh(list_id);
     refresher = setInterval(immediateRefresh, refreshTime);
 }
 
 export function endRefreshing() {
     list.user_id = undefined;
-    list.list_id = 0;
+    list.list_id = undefined;
     list.value = [];
     clearInterval(refresher);
 }
 
-export function immediateRefresh() {
+export function immediateRefresh(list_id) {
     if (getID() === undefined) {
         endRefreshing();
         throw Error('No user logged in!')
+    }
+
+    if (list.list_id === undefined) {
+      if (list_id === undefined) {
+        endRefreshing();
+        throw Error("No list specified");
+      }
+      list.list_id = list_id
     }
     getListItems().then((items) => list.value = items);
 }
