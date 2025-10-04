@@ -5,15 +5,15 @@ import SignUp from './components/SignUp.vue';
 import SignIn from './components/SignIn.vue';
 import List from './components/List/List.vue';
 import TrashList from './components/List/TrashList.vue';
-import ListHolder from './components/ListHolder.vue';
+import ListHolder from './components/Lists/ListHolder.vue';
 
 const routes = [
   { path: '/', component: HomeScreen },
   { path: '/sign-up', component: SignUp },
   { path: '/sign-in', component: SignIn },
   { path: '/list', component: ListHolder, children: [
-    {path: '', component: List},
-    {path: 'trash', component: TrashList}
+    {path: ':id', component: List},
+    {path: ':id/trash', component: TrashList}
   ]},
 ]
 

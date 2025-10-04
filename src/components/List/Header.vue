@@ -1,6 +1,7 @@
 <script setup>
 import { signOut } from '@/database/database-control';
-import { endRefreshing } from '@/database/list-control';
+import { endRefreshing as endSingleList } from '@/database/list-control';
+import { endRefreshing } from '@/database/multiple-list-control';
 import { useRouter } from 'vue-router';
 
 defineProps({
@@ -17,6 +18,7 @@ const router = useRouter();
 function logOut() {
   const success = signOut();
 
+  endSingleList();
   endRefreshing();
 
   if (success) router.push('/');
