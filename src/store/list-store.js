@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getID, supabase } from '@/database/database-control';
+import { supabase } from '@/database/database-control';
 import { computed, ref, watch } from 'vue';
 import { useRoute } from "vue-router";
 

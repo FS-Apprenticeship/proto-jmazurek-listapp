@@ -1,42 +1,53 @@
-let user, session;
+import { supabase } from "@/database/supabase-control";
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
 
-export async function signUpNewUser(email, password) {
-  const { data, error } = await supabase.auth.signUp({email, password});  
+export const useUserStore = defineStore('user', () => {
+    const user = ref(undefined);
+    const session = ref(undefined);
 
-  if (error !== null) return false;
+    const id = computed(() => user.value?.id)
+    const email = computed(() => user.value?.email)
 
-  user = data.user;
-  session = data.session;
+    async function signUpNewUser(email, password) {
+        const { data, error } = await supabase.auth.signUp({email, password});  
 
-  return true;
-}
+        if (error !== null) return false;
 
-export async function signInWithEmail(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({email, password});
+        user.value = data.user;
+        session.value = data.session;
 
-  if (error !== null) return false;
+        return true;
+    }
 
-  user = data.user;
-  session = data.session;
+    async function signInWithEmail(email, password) {
+        const { data, error } = await supabase.auth.signInWithPassword({email, password});
 
-  return true;
-}
+        if (error !== null) return false;
 
-export function getID() {
-  if (user === undefined) return undefined
-  return user.id;
-}
+        user.value = data.user;
+        session.value = data.session;
 
-export function getEmail() {
-  if (user === undefined) return undefined
-  return user.email;
-}
+        return true;
+    }
 
-export async function signOut() {
-  const { error } = await supabase.auth.signOut(session.access_token);
+    async function signOut() {
+        const { error } = await supabase.auth.signOut(session.access_token);
 
-  if (error !== null) return false;
-  user = undefined;
+        if (error !== null) return false;
+        user.value = undefined;
+        session.value = undefined;
 
-  return true;
-}
+        return true;
+    }
+
+    return {
+        user,
+        session,
+        id,
+        email,
+        signUpNewUser,
+        signInWithEmail,
+        signOut
+    }
+})

@@ -1,9 +1,10 @@
-import { getID, supabase } from '@/database/database-control';
+import { supabase } from '@/database/database-control';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import { useUserStore } from './user-store';
 
-async function getLists() {
-  const {data, error} = await supabase.from('lists').select('*').eq('user_id', user_id.value);
+async function getLists(userID) {
+  const {data, error} = await supabase.from('lists').select('*').eq('user_id', userID);
 
   if (error !== null) return false;
 
@@ -18,16 +19,16 @@ async function addListToDB(list) {
   return data[0];
 }
 
-async function updateList(list, id) {
-  const {data, error} = await supabase.from('lists').update(list).eq('user_id', user_id.value).eq('id', id).select();
+async function updateList(userID, list, id) {
+  const {data, error} = await supabase.from('lists').update(list).eq('user_id', userID).eq('id', id).select();
 
   if (error !== null) return false;
 
   return data[0];
 }
 
-async function deleteList(id) {
-  const {data, error} = await supabase.from('lists').delete().eq('user_id', user_id.value).eq('id', id).select();
+async function deleteList(userID, id) {
+  const {data, error} = await supabase.from('lists').delete().eq('user_id', userID).eq('id', id).select();
 
   if (error !== null) return false;
 
@@ -37,8 +38,9 @@ async function deleteList(id) {
 const refreshTime = 1000 * 60 * 10
 
 export const useMultipleListStore = defineStore('multiple-lists', () => {
+    const user = useUserStore();
+
     const lists = ref([])
-    const user_id = getID()
 
     const untrashedLists = computed(() => {
         console.log(Array.isArray(lists.value), lists.value);
@@ -57,19 +59,18 @@ export const useMultipleListStore = defineStore('multiple-lists', () => {
     }
 
     function endRefreshing() {
-        user_id.value = undefined;
         lists.value = [];
         clearInterval(refresher);
     }
 
     function immediateRefresh() {
-        if (getID() === undefined) {
+        if (user.id === undefined) {
             endRefreshing();
             throw Error('No user logged in!')
         }
 
-        getLists().then((items) => {
-        if (items === false) return;
+        getLists(user.id).then((items) => {
+            if (items === false) return;
             lists.value = items
         });
     }
@@ -105,7 +106,7 @@ export const useMultipleListStore = defineStore('multiple-lists', () => {
             name: name.value
         }
 
-        const item = await updateList(updatedList, id);
+        const item = await updateList(user.id, updatedList, id);
 
         if (!item) {
             alert("There was a database error, try again!");
@@ -121,7 +122,7 @@ export const useMultipleListStore = defineStore('multiple-lists', () => {
         //   trash_time: new Date()
         }
 
-        const list = await updateList(updatedList, id);
+        const list = await updateList(user.id, updatedList, id);
 
         if (!list) {
             alert("There was a database error, try again!");
@@ -137,7 +138,7 @@ export const useMultipleListStore = defineStore('multiple-lists', () => {
         //   trash_time: null
         }
 
-        const list = await updateList(updatedList, id);
+        const list = await updateList(user.id, updatedList, id);
 
         if (!list) {
             alert("There was a database error, try again!");
@@ -148,7 +149,7 @@ export const useMultipleListStore = defineStore('multiple-lists', () => {
     }
 
     async function deleteThisList(id) {
-        const destroyedList = await deleteList(id);
+        const destroyedList = await deleteList(user.id, id);
 
         if (!destroyedList) {
             alert("There was a database error, try again!");
