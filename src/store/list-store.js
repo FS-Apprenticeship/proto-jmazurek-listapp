@@ -65,8 +65,6 @@ export const useListStore = defineStore('list', () => {
     }
 
     function endRefreshing() {
-        list.user_id = undefined;
-        list.list_id = undefined;
         list.value = [];
         clearInterval(refresher);
     }
