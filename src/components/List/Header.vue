@@ -1,25 +1,20 @@
 <script setup>
-import { signOut } from '@/database/database-control';
-import { endRefreshing as endSingleList } from '@/database/list-control';
-import { endRefreshing } from '@/database/multiple-list-control';
+import { useListStore } from '@/store/list-store';
+import { useMultipleListStore } from '@/store/multiple-list-store';
+import { useUserStore } from '@/store/user-store';
 import { useRouter } from 'vue-router';
 
-defineProps({
-  email: {
-    type: String,
-    required: true,
-  },
+const user = useUserStore();
+const multipleLists = useMultipleListStore();
+const list = useListStore();
 
-})
-
-const emit = defineEmits(['back']);
 const router = useRouter();
 
 function logOut() {
-  const success = signOut();
+  const success = user.signOut();
 
-  endSingleList();
-  endRefreshing();
+  list.endRefreshing();
+  multipleLists.endRefreshing();
 
   if (success) router.push('/');
   else alert('There was an error in signing out!');
@@ -29,7 +24,7 @@ function logOut() {
 
 <template>
     <header>
-      <h1>Useful List App User: {{ email }}</h1>
+      <h1>Useful List App User: {{ user.email }}</h1>
       <button @click="logOut">Log Out</button>
     </header>
 </template>

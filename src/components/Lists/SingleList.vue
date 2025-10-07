@@ -1,16 +1,17 @@
 <script setup>
-import { deleteThisList, restoreList, trashList } from '@/database/multiple-list-control';
-
+import { useMultipleListStore } from '@/store/multiple-list-store';
     defineProps({
-    list: {
-        type: {
-            name: String,
-            id: String,
-            trashed: Boolean
+        list: {
+            type: {
+                name: String,
+                id: String,
+                trashed: Boolean
+            },
+            required: true,
         },
-        required: true,
-    },
     })
+
+    const lists = useMultipleListStore();
 
     defineEmits('edit');
 
@@ -18,13 +19,13 @@ import { deleteThisList, restoreList, trashList } from '@/database/multiple-list
 
 <template>
     <li class="list">
-        <h3>{{ item.name }}</h3>
+        <h3>{{ list.name }}</h3>
         <button v-if="!list.trashed" class="edit" @click="$emit('edit')">⚙</button>
         <div class="delete">
-            <button v-if="!list.trashed" id="trash-button" class="red" @click="trashList(list.id)">🗑︎</button>
+            <button v-if="!list.trashed" id="trash-button" class="red" @click="lists.trashList(list.id)">🗑︎</button>
             <div v-else>
-                <button id="delete-button" class="red" @click="deleteThisList(list.id)">Delete!</button>
-                <button id="restore-button" class="green" @click="restoreList(list.id)">↩︎ Restore</button>
+                <button id="delete-button" class="red" @click="lists.deleteThisList(list.id)">Delete!</button>
+                <button id="restore-button" class="green" @click="lists.restoreList(list.id)">↩︎ Restore</button>
             </div>
         </div>
     </li>

@@ -1,19 +1,33 @@
 <script setup>
+import { useListStore } from '@/store/list-store';
 import { ref } from 'vue';
 
-    defineProps({
-    item: {
-        type: {
-            name: String,
-            message: String, //Use to add more detail, but not right now
-            checked: Boolean,
-            trashed: Boolean,
+    const { item } = defineProps({
+        item: {
+            required: true,
         },
-        required: true,
-    },
     })
 
-    defineEmits(['update', 'check', 'trash', 'restore','delete', 'edit']);
+    const list = useListStore();
+
+    function check() {
+        console.log(item);
+        list.checkItem(item.id, !item.checked)
+    }
+
+    function trash() {
+        list.trashItem(item.id);
+    }
+
+    function restore() {
+        list.restoreItem(item.id);
+    }
+
+    function deleteItem() {
+        list.deleteItem(item.id)
+    }
+
+    defineEmits(['edit']);
 
     const mode = ref("View");
 
@@ -21,16 +35,16 @@ import { ref } from 'vue';
 
 <template>
     <li v-if="mode === 'View'" class="item">
-        <button class="cross-button" :class="item.checked ? 'green' : ''" @click="$emit('check', item)">
+        <button class="cross-button" :class="item.checked ? 'green' : ''" @click="check">
             {{item.checked ? "✔" : "✗"}}
         </button>
         <h3>{{ item.name }}</h3>
         <button v-if="!item.trashed" class="edit" @click="$emit('edit')">⚙</button>
         <div class="delete">
-            <button v-if="!item.trashed" id="trash-button" class="red" @click="$emit('trash')">🗑︎</button>
+            <button v-if="!item.trashed" id="trash-button" class="red" @click="trash">🗑︎</button>
             <div v-else>
-                <button id="delete-button" class="red" @click="$emit('delete')">Delete!</button>
-                <button id="restore-button" class="green" @click="$emit('restore')">↩︎ Restore</button>
+                <button id="delete-button" class="red" @click="deleteItem">Delete!</button>
+                <button id="restore-button" class="green" @click="restore">↩︎ Restore</button>
             </div>
         </div>
     </li>

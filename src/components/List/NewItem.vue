@@ -1,13 +1,14 @@
 <script setup>
-    import { addAnItem } from '@/database/list-control';
+    import { useListStore } from '@/store/list-store';
     import { ref } from 'vue';
 
     const emit = defineEmits(['create']);
 
+    const list = useListStore();
     const itemName = ref("");
     
     function add() {
-        const success = addAnItem(itemName);
+        const success = list.addAnItem(itemName);
         
         if (success) {
             itemName.value = "";

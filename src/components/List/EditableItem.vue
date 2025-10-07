@@ -1,5 +1,5 @@
 <script setup>
-import { updateItemName } from '@/database/list-control';
+import { useListStore } from '@/store/list-store';
 import { ref } from 'vue';
     const { item } = defineProps({
         item: {
@@ -14,11 +14,12 @@ import { ref } from 'vue';
     })
 
     const emit = defineEmits(['complete']);
+    const list = useListStore();
 
     const itemName = ref(item.name);
 
     function update() {
-        const success = updateItemName(itemName, item.id)
+        const success = list.updateItemName(itemName, item.id)
         if (success) emit('complete')
     }
 

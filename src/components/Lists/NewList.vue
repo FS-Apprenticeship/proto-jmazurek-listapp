@@ -1,13 +1,12 @@
 <script setup>
-import { addList } from '@/database/multiple-list-control';
+import { useMultipleListStore } from '@/store/multiple-list-store';
     import { ref } from 'vue';
 
-    const emit = defineEmits(['create']);
-
     const listName = ref("");
+    const lists = useMultipleListStore();
     
     function add() {
-        const success = addList(listName);
+        const success = lists.addList(listName);
         
         if (success) {
             listName.value = "";

@@ -4,18 +4,20 @@ import { ref } from 'vue'
 import Item from './Item.vue';
 import NewItem from './NewItem.vue';
 import EditableItem from './EditableItem.vue';
-import { checkItem, trashItem, untrashedList } from '@/database/list-control';
+import { useListStore } from '@/store/list-store';
 
 const edit = ref(-1);
+
+const list = useListStore();
 
 </script>
 
 <template>
     <ul>
       <NewItem />
-      <template v-for="item in untrashedList" :key="item.id">
+      <template v-for="item in list.untrashedList" :key="item.id">
         <EditableItem v-if="item.id === edit" :item="item" @complete="edit = -1" />
-        <Item v-else :item="item" @edit="edit = item.id" @trash="() => trashItem(item.id)" @check="() => checkItem(item.id, item.checked)"/>
+        <Item v-else :item="item" @edit="edit = item.id"/>
       </template>
     </ul>
 </template>

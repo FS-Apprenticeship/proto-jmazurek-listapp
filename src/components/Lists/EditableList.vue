@@ -1,5 +1,5 @@
 <script setup>
-import { updateListName } from '@/database/multiple-list-control';
+import { useMultipleListStore } from '@/store/multiple-list-store';
 import { ref } from 'vue';
     const { list } = defineProps({
         list: {
@@ -10,12 +10,14 @@ import { ref } from 'vue';
         }
     })
 
+    const lists = useMultipleListStore();
+
     const emit = defineEmits(['complete']);
 
     const listName = ref(list.name);
 
     function update() {
-        const success = updateListName(listName, list.id)
+        const success = lists.updateListName(listName, list.id)
         if (success) emit('complete')
     }
 

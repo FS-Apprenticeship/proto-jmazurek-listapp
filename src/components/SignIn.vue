@@ -1,9 +1,10 @@
 <script setup>
-    import { signInWithEmail } from '@/database/database-control';
+    import { useUserStore } from '@/store/user-store';
     import { computed, ref } from 'vue';
     import { useRouter } from 'vue-router';
 
     const router = useRouter();
+    const user = useUserStore();
 
     const emailAddress = ref("");
     const validEmail = computed(() => {
@@ -22,7 +23,7 @@
 
     async function submit() {
         if (!validEmail.value) return; //Just to be safe
-        let success = await signInWithEmail(emailAddress.value, password.value);
+        let success = await user.signInWithEmail(emailAddress.value, password.value);
 
         if (!success) error.value = 'Password or email was incorrect!';
         else router.push('list');

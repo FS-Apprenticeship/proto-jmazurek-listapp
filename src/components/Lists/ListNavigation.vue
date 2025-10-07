@@ -1,22 +1,22 @@
 <script setup>
 
 import { ref } from 'vue'
-import { initializeRefreshing, untrashedLists } from '@/database/multiple-list-control';
 import SingleList from './SingleList.vue';
 import EditableList from './EditableList.vue';
 import NewList from './NewList.vue';
+import { useMultipleListStore } from '@/store/multiple-list-store';
 
-initializeRefreshing();
+const lists = useMultipleListStore();
+lists.initializeRefreshing();
 
 const edit = ref(-1);
-
 </script>
 
 <template>
     <ul>
       <NewList />
-      <template v-for="list in untrashedLists" :key="list.id">
-        <EditableList v-if="list.id === edit" :list="item" @complete="edit = -1" />
+      <template v-for="list in lists.untrashedLists" :key="list.id">
+        <EditableList v-if="list.id === edit" :list="list" @complete="edit = -1" />
         <SingleList v-else :list="list" @edit="edit = list.id"/>
       </template>
     </ul>

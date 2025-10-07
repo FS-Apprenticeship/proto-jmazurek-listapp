@@ -1,11 +1,13 @@
 <script setup>
-import { deleteItem, restoreItem, trashedList } from '@/database/list-control';
+import { useListStore } from '@/store/list-store';
 import Item from './Item.vue';
+
+const list = useListStore();
 </script>
 
 <template>
     <ul>
-        <Item v-for="item in trashedList" :key="item.id" :item="item" @restore="() => restoreItem(item.id)" @delete="() => deleteItem(item.id)" />
+        <Item v-for="item in list.trashedList" :key="item.id" :item="item" />
     </ul>
 </template>
 
