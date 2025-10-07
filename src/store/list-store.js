@@ -8,6 +8,7 @@ async function getListItems(listID) {
     if (listID === undefined) return false;
     const {data, error} = await supabase.from('items').select('*').eq('list_id', listID);
 
+    console.log(error);
     if (error !== null) return false;
     return data;
 }
@@ -16,9 +17,11 @@ async function addListItem(listID, item) {
     if (listID === undefined) return false;
     const { data, error } = await supabase.from('items').insert({...item, list_id: listID}).select();
 
+    console.log(error);
+
     if (error !== null) return false;
 
-    return data;
+    return data[0];
 }
 
 async function updateListItem(listID, item, itemID) {
@@ -27,7 +30,7 @@ async function updateListItem(listID, item, itemID) {
 
     if (error !== null) return false;
 
-    return data;
+    return data[0];
 }
 
 async function deleteListItem(listID, itemID) {
@@ -36,14 +39,14 @@ async function deleteListItem(listID, itemID) {
 
     if (error !== null) return false;
 
-    return data;
+    return data[0];
 }
 
 const refreshTime = 1000 * 60 * 10
 //Store
 export const useListStore = defineStore('list', () => {
     const route = useRoute();
-    const listID = route.params.id;
+    const listID = computed(() => route.params.id);
     const list = ref([]);
 
     watch(listID, initializeRefreshing)
@@ -70,17 +73,14 @@ export const useListStore = defineStore('list', () => {
     }
 
     function immediateRefresh() {
-        if (getID() === undefined) {
-            endRefreshing();
-            throw Error('No user logged in!')
-        }
-
         if (listID === undefined) {
             endRefreshing();
             throw Error("No list specified");
         }
 
-        getListItems(listID).then((items) => list.value = items);
+        getListItems(listID.value).then((items) => {
+            if (items) list.value = items;
+        });
     }
 
     async function addAnItem(itemName) {
@@ -92,7 +92,7 @@ export const useListStore = defineStore('list', () => {
             trashed: false,
         }
 
-        const [item] = await addListItem(listID, newItem);
+        const item = await addListItem(listID.value, newItem);
 
         if (!item) {
             alert("There was a database error, try again!");
@@ -116,7 +116,7 @@ export const useListStore = defineStore('list', () => {
             name: name.value
         }
 
-        const [item] = await updateListItem(listID, updatedItem, id);
+        const item = await updateListItem(listID.value, updatedItem, id);
 
         if (!item) {
             alert("There was a database error, try again!");
@@ -131,7 +131,7 @@ export const useListStore = defineStore('list', () => {
             checked: !checked
         }
 
-        const [item] = await updateListItem(listID, updatedItem, id);
+        const item = await updateListItem(listID.value, updatedItem, id);
 
         if (!item) {
             alert("There was a database error, try again!");
@@ -147,7 +147,7 @@ export const useListStore = defineStore('list', () => {
             trash_time: new Date()
         }
 
-        const [item] = await updateListItem(listID, updatedItem, id);
+        const item = await updateListItem(listID.value, updatedItem, id);
 
         if (!item) {
             alert("There was a database error, try again!");
@@ -163,7 +163,7 @@ export const useListStore = defineStore('list', () => {
             trash_time: null
         }
 
-        const [item] = await updateListItem(listID, updatedItem, id);
+        const item = await updateListItem(listID.value, updatedItem, id);
 
         if (!item) {
             alert("There was a database error, try again!");
@@ -174,7 +174,7 @@ export const useListStore = defineStore('list', () => {
     }
 
     async function deleteItem(id) {
-        const [destroyedItem] = await deleteListItem(listID, id);
+        const destroyedItem = await deleteListItem(listID.value, id);
 
         if (!destroyedItem) {
             alert("There was a database error, try again!");

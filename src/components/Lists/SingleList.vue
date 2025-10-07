@@ -1,5 +1,6 @@
 <script setup>
 import { useMultipleListStore } from '@/store/multiple-list-store';
+import { useRoute, useRouter } from 'vue-router';
     defineProps({
         list: {
             type: {
@@ -11,6 +12,8 @@ import { useMultipleListStore } from '@/store/multiple-list-store';
         },
     })
 
+    const route = useRoute();
+    const router = useRouter();
     const lists = useMultipleListStore();
 
     defineEmits('edit');
@@ -18,7 +21,7 @@ import { useMultipleListStore } from '@/store/multiple-list-store';
 </script>
 
 <template>
-    <li class="list">
+    <li class="list" @click="router.push(`/list/${list.id}`)" :class="route.params.id === list.id ? 'selected': ''">
         <h3>{{ list.name }}</h3>
         <button v-if="!list.trashed" class="edit" @click="$emit('edit')">⚙</button>
         <div class="delete">
@@ -32,22 +35,18 @@ import { useMultipleListStore } from '@/store/multiple-list-store';
 </template>
 
 <style scoped>
-    .cross-button {
-        width: 10%;
-        border: none;
-        border-right: 1px solid black;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
     h3 {
         width: 70%;
         padding-left: 5%;
     }
 
+    .selected {
+        background-color: lightgray;
+    }
+
     .edit {
         font-size: larger;
-        width: 5%;
+        width: 10%;
         justify-content: center;
         border: none;
         border-left: 1px solid black;
@@ -55,7 +54,7 @@ import { useMultipleListStore } from '@/store/multiple-list-store';
 
     .delete {
         margin-left: auto;
-        width: 10%;
+        width: 15%;
         border-bottom-right-radius: 20px;
     }
 
