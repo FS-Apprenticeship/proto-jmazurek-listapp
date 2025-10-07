@@ -1,23 +1,23 @@
 <script setup>
-    import { addAnItem } from '@/database/list-control';
+import { addList } from '@/database/multiple-list-control';
     import { ref } from 'vue';
 
     const emit = defineEmits(['create']);
 
-    const itemName = ref("");
+    const listName = ref("");
     
     function add() {
-        const success = addAnItem(itemName);
+        const success = addList(listName);
         
         if (success) {
-            itemName.value = "";
+            listName.value = "";
         }
     }
 </script>
 
 <template>
-    <li class="item">
-        <input v-model="itemName" @keyup.enter="add" />
+    <li class="list">
+        <input v-model="listName" @keyup.enter="add" />
         <button class="cross-button green" @click="add">✔</button>
     </li>
 </template>

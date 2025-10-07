@@ -1,6 +1,6 @@
 <script setup>
 import { getEmail } from '@/database/database-control';
-import Header from './List/Header.vue';
+import Header from '../List/Header.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { initializeRefreshing } from '@/database/list-control';
 import ListNavigation from './ListNavigation.vue';
