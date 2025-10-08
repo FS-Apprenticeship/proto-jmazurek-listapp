@@ -41,8 +41,8 @@ VITE_SUPABASE_ANON_KEY = "[your key here]"
 
 ## Next Steps
 * ~~Routing~~
-* Restructure internal data handling
-* Multiple lists
+* ~~Restructure internal data handling~~
+* ~~Multiple lists~~
 * UI prettification
 * Auto-deletion of old trashed items
 * Sharing lists between users

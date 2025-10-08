@@ -25,11 +25,11 @@ import { useRoute, useRouter } from 'vue-router';
         <h3>{{ list.name }}</h3>
         <button v-if="!list.trashed" class="edit" @click="$emit('edit')">⚙</button>
         <div class="delete">
-            <button v-if="!list.trashed" id="trash-button" class="red" @click="lists.trashList(list.id)">🗑︎</button>
-            <div v-else>
+            <button v-if="!list.trashed" id="trash-button" class="red" @click="lists.deleteThisList(list.id)">🗑︎</button>
+            <!-- <div v-else>
                 <button id="delete-button" class="red" @click="lists.deleteThisList(list.id)">Delete!</button>
                 <button id="restore-button" class="green" @click="lists.restoreList(list.id)">↩︎ Restore</button>
-            </div>
+            </div> -->
         </div>
     </li>
 </template>
