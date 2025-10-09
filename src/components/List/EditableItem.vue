@@ -33,38 +33,11 @@ import { ref } from 'vue';
 </template>
 
 <style scoped>
-    .cross-button {
-        width: 10%;
-        border: 0px;
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-
-    input {
-        font-size: larger;
-        width: 85%;
-        padding-left: 5%;
-        border: none;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
-    .green {
-        background-color: green;
-        color: white;
-    }
-
-    .green:hover {
-        background-color: #159515;
-    }
-
-
-    .red {
-        background-color: #d00000;
-        color: white;
-    }
-
-    .red:hover {
-        background-color: #f50000;
-    }
+    li.item { align-items: center; }
+input { width: 85%; padding-left: 5%; border: none; border-radius: 6px; font-size: 1rem; }
+.cross-button { width: 14%; border: 0; border-radius: 0 6px 6px 0; margin-left: auto; }
+.green { background-color: green; color: white; }
+.green:hover { background-color: #159515; }
+.red { background-color: #d00000; color: white; }
+.red:hover { background-color: #f50000; }
 </style>

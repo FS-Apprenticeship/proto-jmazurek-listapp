@@ -44,3 +44,14 @@
         <button type="submit" :disabled="!validEmail">Sign In</button>
     </form>
 </template>
+
+<style scoped>
+header { background: lightseagreen; height: 60px; display: flex; align-items: center; padding: 0 16px; color: white; }
+header h1 { margin: 0; }
+form { display: flex; flex-direction: column; gap: 8px; max-width: 420px; margin: 20px auto; padding: 16px; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+label { font-weight: bold; }
+input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+button[type="submit"] { align-self: flex-start; padding: 8px 12px; border-radius: 6px; border: none; background: #2e7d32; color: white; cursor: pointer; }
+button[disabled] { opacity: 0.5; cursor: not-allowed; }
+p { color: #d32f2f; margin: 0; }
+</style>

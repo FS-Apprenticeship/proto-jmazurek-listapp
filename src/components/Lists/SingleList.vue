@@ -35,69 +35,16 @@ import { useRoute, useRouter } from 'vue-router';
 </template>
 
 <style scoped>
-    h3 {
-        width: 70%;
-        padding-left: 5%;
-    }
-
-    .selected {
-        background-color: lightgray;
-    }
-
-    .edit {
-        font-size: larger;
-        width: 10%;
-        justify-content: center;
-        border: none;
-        border-left: 1px solid black;
-    }
-
-    .delete {
-        margin-left: auto;
-        width: 15%;
-        border-bottom-right-radius: 20px;
-    }
-
-    .delete * {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    #trash-button {
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-        border: 0px;
-    }
-
-    #delete-button {
-        border-top-right-radius: 20px;
-        border: 0px;
-    }
-
-    #restore-button {
-        border-bottom-right-radius: 20px;
-        border: 0px;
-    }
-
-    .green {
-        background-color: green;
-        color: white;
-    }
-
-    .green:hover {
-        background-color: #159515;
-    }
-
-
-    .red {
-        background-color: #d00000;
-        color: white;
-    }
-
-    .red:hover {
-        background-color: #f50000;
-    }
+li.list { height: 63px; width: 50%; border: 1px solid #000; border-radius: 20px; display: flex; align-items: center; padding: 0 8px; }
+h3 { width: 70%; padding-left: 5%; }
+.selected { background: #dbeafe; }
+.edit { font-size: larger; width: 10%; border: none; border-left: 1px solid #000; }
+.delete { margin-left: auto; width: 15%; display: flex; justify-content: center; }
+#trash-button { border-top-right-radius: 20px; border-bottom-right-radius: 20px; border: 0; }
+#delete-button { border-top-right-radius: 20px; border: 0; }
+#restore-button { border-bottom-right-radius: 20px; border: 0; }
+.green { background-color: green; color: white; }
+.green:hover { background-color: #159515; }
+.red { background-color: #d00000; color: white; }
+.red:hover { background-color: #f50000; }
 </style>

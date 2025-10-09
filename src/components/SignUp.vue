@@ -51,24 +51,12 @@
 </template>
 
 <style scoped>
-    header {
-    height: 20%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-
-    background-color: lightseagreen;
-  }
-
-  h1 {
-    margin-left: 5px;
-    margin-right: auto;
-  }
-
-  .back {
-    height: 200px;
-    width: 200px;
-    font-size:xx-large;
-    background-color: inherit;
-  }
+header { height: 60px; display: flex; align-items: center; padding: 0 16px; background: lightseagreen; color: white; }
+header .back { height: 40px; width: 40px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: white; font-size: 1.2rem; }
+header h1 { margin: 0; flex: 1; font-size: 1.25rem; text-align: center; }
+form { display: flex; flex-direction: column; gap: 8px; max-width: 420px; margin: 20px auto; padding: 16px; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+label { font-weight: bold; }
+input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+button[type="submit"] { align-self: flex-start; padding: 8px 12px; border-radius: 6px; border: none; background: #2e7d32; color: white; cursor: pointer; }
+p { color: #d32f2f; margin: 0; }
 </style>

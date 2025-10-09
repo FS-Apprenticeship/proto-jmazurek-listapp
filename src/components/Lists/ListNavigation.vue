@@ -23,19 +23,11 @@ const edit = ref(-1);
 </template>
 
 <style scoped>
-  .list {
-        height: 63px;
-        width: 50%;
-        border: solid 1px black;
-        border-radius: 20px;
-        
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 20px;
-    }
-
-    ul {
-      display: flex;
-      flex-direction: row;
-    }
+ul { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.list { height: 63px; width: 50%; border: 1px solid #000; border-radius: 20px; display: flex; align-items: center; padding: 0 8px; }
+.selected { background: #e5e7eb; }
+.edit { font-size: larger; width: 10%; border: none; border-left: 1px solid #000; }
+.delete { margin-left: auto; width: 15%; display: flex; justify-content: center; }
+#trash-button, #delete-button, #restore-button { border: none; }
+#trash-button { border-top-right-radius: 20px; border-bottom-right-radius: 20px; }
 </style>

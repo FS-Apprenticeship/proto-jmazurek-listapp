@@ -17,24 +17,31 @@
 </template>
 
 <style scoped>
-  header {
-    height: 20%;
-    width: 100%;
-    display: flex;
-    align-items: center;
+header {
+  height: 20vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background-color: lightseagreen;
+  color: white;
+}
+header h1 { margin: 0; font-size: 1.75rem; }
+button.rounded {
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  padding: 0 12px;
+  background: rgba(255,255,255,0.25);
+  color: white; cursor: pointer;
+}
+button.rounded:hover { background: rgba(255,255,255,0.4); }
+main { padding: 20px; }
+@media (max-width: 600px) {
+  header { flex-direction: column; height: auto; padding: 12px 0; }
+  header h1 { font-size: 1.25rem; }
+  .rounded { width: auto; height: 36px; }
+}
 
-    background-color: lightseagreen;
-  }
-
-  h1 {
-    margin-left: 5px;
-    margin-right: auto;
-  }
-
-  .rounded {
-    height: 75%;
-    width: 10%;
-    border-radius: 5px;
-    margin-right: 5px;
-  }
 </style>

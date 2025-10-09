@@ -30,5 +30,7 @@ function logOut() {
 </template>
 
 <style scoped>
-
+header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #e5e7eb; }
+h1 { margin: 0; font-size: 1.1rem; }
+button { background: #1f2937; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
 </style>

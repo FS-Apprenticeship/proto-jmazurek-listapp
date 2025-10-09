@@ -12,14 +12,5 @@ const list = useListStore();
 </template>
 
 <style scoped>
-  .item {
-        height: 63px;
-        width: 50%;
-        border: solid 1px black;
-        border-radius: 20px;
-        
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 20px;
-    }
+.item { height: 63px; width: 50%; border: 1px solid #000; border-radius: 20px; display: flex; align-items: center; gap: 8px; padding: 0 8px; }
 </style>

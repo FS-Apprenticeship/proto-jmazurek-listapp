@@ -20,14 +20,6 @@ const router = useRouter();
 </template>
 
 <style scoped>
-  .item {
-        height: 63px;
-        width: 50%;
-        border: solid 1px black;
-        border-radius: 20px;
-        
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 20px;
-    }
+.tabs { display: flex; gap: 8px; padding: 8px 0; }
+.list { height: 63px; width: 50%; border: 1px solid #000; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; }
 </style>
